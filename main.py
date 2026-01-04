@@ -1,12 +1,16 @@
 import qrcode
+from pathlib import Path
 
-url = input("Enter the URL: ").strip()
-file_path = "qrcode.png"
+codes_dir = Path("codes")
+codes_dir.mkdir(exist_ok=True)
 
-qr = qrcode.QRCode()
-qr.add_data(url)
+url = input("URL: ").strip()
+name = input("QR name: ").strip().replace(" ", "_")
 
-img = qr.make_image()
-img.save(file_path)
+if not url or not name:
+    raise SystemExit("URL and name are required.")
 
-print("QR Code was generated!")
+file_path = codes_dir / f"{name}.png"
+qrcode.make(url).save(file_path)
+
+print(f"Saved: {file_path}")
